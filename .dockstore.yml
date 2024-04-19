@@ -1,9 +1,9 @@
 version: 1.2
 workflows:
-  - subclass: CWL
+  - subclass: WDL
     primaryDescriptorPath: /ExtractSampleSVEvidence.wdl
     testParameterFiles:
-      - test_input.cwl.json
+      - /test_input.wdl.json
     authors:
       - name: Justin Lim
         email: jlim21@mgh.harvard.edu
