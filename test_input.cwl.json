@@ -1,0 +1,7 @@
+{
+    "ExtractSampleSVEvidence.sample_ids": [ "null" ],
+    "ExtractSampleSVEvidence.gatk_docker": "null",
+    "ExtractSampleSVEvidence.batch_bucket_path": "null",
+    "ExtractSampleSVEvidence.batch_id": "null"
+}
+

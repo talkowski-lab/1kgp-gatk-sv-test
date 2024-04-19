@@ -2,4 +2,9 @@ version: 1.2
 workflows:
   - subclass: CWL
     primaryDescriptorPath: /ExtractSampleSVEvidence.wdl
+    testParameterFiles:
+      - test_input.cwl.json
+    authors:
+      - name: Justin Lim
+        email: jlim21@mgh.harvard.edu
     topic: Split batch PE, SR, RD, and BAF evidence into sample evidence
