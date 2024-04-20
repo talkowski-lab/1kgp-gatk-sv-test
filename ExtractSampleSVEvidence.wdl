@@ -140,7 +140,7 @@ task GetSR {
 
     mkdir 'SR'
     gzip --decompress --stdout '~{batch_sr_file}' \
-      | awk -F'\t' 'NR==FNR{a[$1]} NR>FNR && ($5 in a){print > ("SR/" $5 ".SR.txt")}'' '~{sample_ids_file}' -
+      | awk -F'\t' 'NR==FNR{a[$1]} NR>FNR && ($5 in a){print > ("SR/" $5 ".SR.txt")}' '~{sample_ids_file}' -
     find 'SR' -name '*.SR.txt' -type f -exec bgzip '{}' \; 
   >>>
 
@@ -242,7 +242,7 @@ task GetBAF {
 
     mkdir 'BAF'
     gzip --decompress --stdout '~{batch_baf_file}' \
-      | awk -F'\t' 'NR==FNR{a[$1]} NR>FNR && ($4 in a){print > ("BAF/" $4 ".BAF.txt")}'' '~{sample_ids_file}' -
+      | awk -F'\t' 'NR==FNR{a[$1]} NR>FNR && ($4 in a){print > ("BAF/" $4 ".BAF.txt")}' '~{sample_ids_file}' -
     find 'BAF' -name '*.BAF.txt' -type f -exec bgzip '{}' \; 
   >>>
 
