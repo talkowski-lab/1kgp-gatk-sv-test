@@ -74,7 +74,7 @@ task GetPE {
   }
 
   Float batch_pe_file_size = size(batch_pe_file, "GiB")
-  Int vm_disk_size = ceil(batch_pe_file_size * 2)
+  Int vm_disk_size = ceil(batch_pe_file_size * 3)
   RuntimeAttr default_attr = object {
     cpu_cores: 1,
     mem_gb: 2,
@@ -121,7 +121,7 @@ task GetSR {
   }
 
   Float batch_sr_file_size = size(batch_sr_file, "GiB")
-  Int vm_disk_size = ceil(batch_sr_file_size * 2)
+  Int vm_disk_size = ceil(batch_sr_file_size * 3)
   RuntimeAttr default_attr = object {
     cpu_cores: 1,
     mem_gb: 2,
@@ -168,7 +168,7 @@ task GetRD {
   }
 
   Float batch_rd_file_size = size(batch_rd_file, "GiB")
-  Int vm_disk_size = ceil(batch_rd_file_size * 2)
+  Int vm_disk_size = ceil(batch_rd_file_size * 5)
   RuntimeAttr default_attr  = object {
     cpu_cores: 1,
     mem_gb: 2,
@@ -223,7 +223,7 @@ task GetBAF {
   }
 
   Float batch_baf_file_size = size(batch_baf_file, "GiB")
-  Int vm_disk_size = ceil(batch_baf_file_size * 2)
+  Int vm_disk_size = ceil(batch_baf_file_size * 3)
   RuntimeAttr default_attr = object {
     cpu_cores: 1,
     mem_gb: 2,
