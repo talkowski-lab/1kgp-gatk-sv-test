@@ -200,7 +200,7 @@ task GetRD {
   >>>
 
   output {
-    Array[File] rd_files = glob("RD/*.RD.txt.gz")
+    Array[File] rd_files = glob("RD/*.RD.tsv.gz")
   }
 
   runtime {
