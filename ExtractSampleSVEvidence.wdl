@@ -189,18 +189,12 @@ task GetRD {
     gzip --decompress --stdout '~{batch_rd_file}' \
     | awk -F'\t' 'NR==FNR{a[$1]; next}
         FNR==1{for(i=1;i<=NF;++i)b[$i]=i}
-        FNR>1{for(id in b){if(id in a) print $1,$2,$3,$(b[id]) > ("RD/" id ".RD.tmp")}}' OFS="\t" '~{sample_ids_file}' -
-    printf 'CONTIG\tSTART\tEND\tCOUNT\n' > "RD/header.tsv"
-    while IFS= read -r file; do
-      outfile="${file/%.tmp/.tsv}"
-      cat "RD/header.tsv" "${file}" > "${outfile}"
-      bgzip "${outfile}"
-    done < <(find 'RD' -name '*.RD.tmp' -type f -print)
-    rm 'RD/header.tsv'
+        FNR>1{for(id in b){if(id in a) print $1,$2,$3,$(b[id]) > ("RD/" id ".RD.txt")}}' OFS="\t" '~{sample_ids_file}' -
+    find 'RD' -name '*.RD.txt' -type f -exec bgzip '{}' \;
   >>>
 
   output {
-    Array[File] rd_files = glob("RD/*.RD.tsv.gz")
+    Array[File] rd_files = glob("RD/*.RD.txt.gz")
   }
 
   runtime {
