@@ -16,6 +16,7 @@ workflow ExtractSampleSVEvidence {
     String batch_bucket_path
     Array[String] sample_ids
     String gatk_docker
+    File rd_header
     RuntimeAttr? runtime_attr_override
   }
 
@@ -44,6 +45,7 @@ workflow ExtractSampleSVEvidence {
   call GetRD {
     input:
       batch_rd_file = batch_rd_file,
+      rd_header = rd_header,
       sample_ids = sample_ids,
       gatk_docker = gatk_docker,
       runtime_attr_override = runtime_attr_override
@@ -162,6 +164,7 @@ task GetSR {
 task GetRD {
   input {
     File batch_rd_file
+    File rd_header
     Array[String] sample_ids
     String gatk_docker
     RuntimeAttr? runtime_attr_override
@@ -190,7 +193,14 @@ task GetRD {
     | awk -F'\t' 'NR==FNR{a[$1]; next}
         FNR==1{for(i=1;i<=NF;++i)b[$i]=i}
         FNR>1{for(id in b){if(id in a) print $1,$2,$3,$(b[id]) > ("RD/" id ".RD.txt")}}' OFS="\t" '~{sample_ids_file}' -
-    find 'RD' -name '*.RD.txt' -type f -exec bgzip '{}' \;
+    while IFS= read -r file; do
+      bn="$(basename "${file}")"
+      sample_id="${bn%.RD.txt}"
+      printf '@RG\tID:GATKCopyNumber\tSM:%s\n' "${sample_id}" \
+        | cat '~{rd_header}' - "${file}" > "RD/${sample_id}.tmp"
+      mv "RD/${sample_id}.tmp" "${file}"
+      bgzip "${file}"
+    done < <(find 'RD' -name '*.RD.txt' -type f -print)
   >>>
 
   output {
