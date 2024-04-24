@@ -192,11 +192,11 @@ task GetRD {
     gzip --decompress --stdout '~{batch_rd_file}' \
     | awk -F'\t' 'NR==FNR{a[$1]; next}
         FNR==1{for(i=1;i<=NF;++i)b[$i]=i}
-        FNR>1{for(id in b){if(id in a) print $1,$2,$3,$(b[id]) > ("RD/" id ".RD.txt")}}' OFS="\t" '~{sample_ids_file}' -
+        FNR>1{for(id in b){if(id in a) print $1,$2+1,$3,$(b[id]) > ("RD/" id ".RD.txt")}}' OFS="\t" '~{sample_ids_file}' -
     while IFS= read -r file; do
       bn="$(basename "${file}")"
       sample_id="${bn%.RD.txt}"
-      printf '@RG\tID:GATKCopyNumber\tSM:%s\n' "${sample_id}" \
+      printf '@RG\tID:GATKCopyNumber\tSM:%s\nCONTIG\tSTART\tEND\tCOUNT\n' "${sample_id}" \
         | cat '~{rd_header}' - "${file}" > "RD/${sample_id}.tmp"
       mv "RD/${sample_id}.tmp" "${file}"
       bgzip "${file}"
